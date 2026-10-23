@@ -1,21 +1,27 @@
 %{
 #include <stdio.h>
-#include <ctype.h>
+
+char changeCase(char c)
+{
+    if (c >= 'A' && c <= 'Z')
+        return c + ('a' - 'A');
+    else
+        return c - ('a' - 'A');
+}
 %}
 
 %%
-[a-z] { printf("%c", toupper(yytext[0])); }
-[A-Z] { printf("%c", tolower(yytext[0])); }
-.     { printf("%c", yytext[0]); }
-\n    { printf("\n"); }
+[a-zA-Z] { putchar(changeCase(yytext[0])); }
+.        { printf(" Invalid character: %s", yytext); }
 %%
 
-int yywrap() {
-    return 1;
-}
-
-int main() {
-    printf("Enter a string: ");
+int main()
+{
     yylex();
     return 0;
+} 
+
+int yywrap()
+{
+    return 1;
 }
